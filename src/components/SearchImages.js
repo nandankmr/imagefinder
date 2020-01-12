@@ -9,6 +9,7 @@ import {
   Toolbar,
   Typography
 } from "@material-ui/core";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import CloseIcon from "@material-ui/icons/Close";
@@ -55,13 +56,16 @@ export default function SearchImages({ images }) {
   };
   return (
     <div className={classes.root}>
-      <GridList cellHeight={180} cols={3}>
+      <GridList cellHeight={180} cols={3} style={{ minHeight: "80vh" }}>
         {images.map(tile => (
           <GridListTile key={tile.previewURL}>
-            <img src={tile.webformatURL} alt={tile.tags} 
-            onClick={() => {
-              handleClickOpen(tile.largeImageURL);
-            }}/>
+            <img
+              src={tile.webformatURL}
+              alt={tile.tags}
+              onClick={() => {
+                handleClickOpen(tile.largeImageURL);
+              }}
+            />
             <GridListTileBar
               title={tile.tags}
               subtitle={<span>by: {tile.user}</span>}
@@ -98,17 +102,38 @@ export default function SearchImages({ images }) {
             >
               <CloseIcon />
             </IconButton>
+
+            <a href={focus} download target="_blank" title="Download">
+              <IconButton edge="end" color="inherit" aria-label="download">
+                <GetAppIcon />
+              </IconButton>
+            </a>
           </Toolbar>
         </AppBar>
 
-        <DialogContent dividers style={{ padding: "0", margin: "0" }}>
+        <DialogContent dividers style={{ padding: "0", margin: "auto" }}>
           <img
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            style={{ maxWidth: "100%", maxHeight: "100%", margin:"auto" }}
             src={focus}
             alt=""
           />
         </DialogContent>
       </Dialog>
+
+      <footer
+        style={{
+          height: "2rem",
+          marginTop: "1rem",
+          background: "#333",
+          bottom: "0px",
+          width: "100%",
+          color: "#eee",
+          textAlign: "center",
+          paddingTop: "1rem"
+        }}
+      >
+        Nandan Kumar, &copy; 2020
+      </footer>
     </div>
   );
 }
