@@ -4,68 +4,56 @@ import {
   TextField,
   InputLabel,
   MenuItem,
-  FormControl,
-  AppBar,
+  Paper,
+  Card,
+  Button,
   Typography
 } from "@material-ui/core";
-import Axios from "axios";
-import SearchImages from "./SearchImages";
+import SearchIcon from "@material-ui/icons/Search";
+import "./css/Search.css";
 
-export default function Search() {
-  const [images, setImages] = useState([]);
+export default function Search({ getServerImages }) {
   const [q, setQ] = useState("");
-  const [hits, setHits] = useState(5);
+  const [hits, setHits] = useState(10);
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [openSource, setOpenSource] = useState(false);
+  const [source, setSource] = useState("Pixabay");
 
-  const getImages = () => {
-    const key = "14838845-97aff471166809fe19bd2c3a9";
-    Axios.get(
-      "https://pixabay.com/api/?key=" +
-        key +
-        "&q=" +
-        q +
-        "&image_type=photo&per_page=" +
-        hits
-    )
-      .then(res => {
-        setImages(res.data.hits);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => getImages(), [hits, q]);
+  useEffect(() => {
+    // console.log(images);
+    getServerImages(source, q, hits);
+  }, [hits, source]);
 
   return (
     <React.Fragment>
-      <div
-        style={{
-          background: "#333",
-          textAlign: "center",
-          color: "#eee",
-          padding: "10px",
-          marginBottom: "1rem"
-        }}
-      >
-        <h1 style={{ margin: 0 }}>Image Finder</h1>
-      </div>
-
-      <TextField
-        id="outlined-basic"
-        label="Search Images"
-        variant="outlined"
-        defaultValue={q}
-        fullWidth={true}
-        onChange={e => setQ(e.target.value)}
-      />
+      <Card raised className="card">
+        <TextField
+          className="input"
+          label="Search Images"
+          variant="outlined"
+          defaultValue={q}
+          fullWidth={true}
+          onChange={e => setQ(e.target.value)}
+          onKeyPress={e =>
+            e.key == "Enter" ? () => getServerImages(source, q, hits) : null
+          }
+        />
+        <Button
+          style={{ padding: "0 15" }}
+          variant="contained"
+          color="secondary"
+          className="btn"
+          startIcon={<SearchIcon />}
+          onClick={() => getServerImages(source, q, hits)}
+        >
+          <Typography>Search</Typography>
+        </Button>
+      </Card>
       <InputLabel style={{ width: "100px", marginTop: "5px" }}>
         <em>Hits</em>
       </InputLabel>
       <Select
         style={{ width: "100px", marginBottom: "8px" }}
-        //   labelId="demo-controlled-open-select-label"
         open={open}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
@@ -79,7 +67,22 @@ export default function Search() {
         <MenuItem value={50}>50</MenuItem>
       </Select>
 
-      {images.length ? <SearchImages images={images} /> : " "}
+      <InputLabel style={{ width: "100px", marginTop: "5px" }}>
+        <em>Source</em>
+      </InputLabel>
+      <Select
+        style={{ width: "100px", marginBottom: "8px" }}
+        open={openSource}
+        onClose={() => setOpenSource(false)}
+        onOpen={() => setOpenSource(true)}
+        value={source}
+        onChange={e => setSource(e.target.value)}
+      >
+        <MenuItem value={"Pixabay"}>Pixabay</MenuItem>
+        <MenuItem value={"Unsplash"}>Unsplash</MenuItem>
+        <MenuItem value={"Pexels"}>Pexels</MenuItem>
+        <MenuItem value={"Giphy"}>Giphy</MenuItem>
+      </Select>
     </React.Fragment>
   );
 }

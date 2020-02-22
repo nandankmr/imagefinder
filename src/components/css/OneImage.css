@@ -1,0 +1,21 @@
+.box {
+  width: 17rem;
+  height: 20rem;
+  margin: 0.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  cursor: pointer;
+  flex: 5;
+  /* width: 100%; */
+}
+
+.header {
+  flex: 1;
+}
+
+.cardAction {
+  flex: 1;
+}

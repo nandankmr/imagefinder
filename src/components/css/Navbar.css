@@ -1,0 +1,11 @@
+.tool {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tool div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+}

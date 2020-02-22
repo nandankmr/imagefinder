@@ -1,0 +1,10 @@
+.profile-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-card CardHeader {
+  display: flex;
+  justify-content: center;
+}
