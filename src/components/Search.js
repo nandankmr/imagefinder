@@ -7,7 +7,8 @@ import {
   Paper,
   Card,
   Button,
-  Typography
+  Typography,
+  FormControl
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import "./css/Search.css";
@@ -38,6 +39,22 @@ export default function Search({ getServerImages }) {
             e.key == "Enter" ? () => getServerImages(source, q, hits) : null
           }
         />
+        <FormControl style={{ minWidth: "7rem", margin: " 0 0.5rem" }}>
+          {" "}
+          <InputLabel>Source</InputLabel>
+          <Select
+            open={openSource}
+            onClose={() => setOpenSource(false)}
+            onOpen={() => setOpenSource(true)}
+            value={source}
+            onChange={e => setSource(e.target.value)}
+          >
+            <MenuItem value={"Pixabay"}>Pixabay</MenuItem>
+            <MenuItem value={"Unsplash"}>Unsplash</MenuItem>
+            <MenuItem value={"Pexels"}>Pexels</MenuItem>
+            <MenuItem value={"Giphy"}>Giphy</MenuItem>
+          </Select>
+        </FormControl>
         <Button
           style={{ padding: "0 15" }}
           variant="contained"
@@ -49,7 +66,7 @@ export default function Search({ getServerImages }) {
           <Typography>Search</Typography>
         </Button>
       </Card>
-      <InputLabel style={{ width: "100px", marginTop: "5px" }}>
+      {/* <InputLabel style={{ width: "100px", marginTop: "5px" }}>
         <em>Hits</em>
       </InputLabel>
       <Select
@@ -65,24 +82,7 @@ export default function Search({ getServerImages }) {
         <MenuItem value={20}>20</MenuItem>
         <MenuItem value={30}>30</MenuItem>
         <MenuItem value={50}>50</MenuItem>
-      </Select>
-
-      <InputLabel style={{ width: "100px", marginTop: "5px" }}>
-        <em>Source</em>
-      </InputLabel>
-      <Select
-        style={{ width: "100px", marginBottom: "8px" }}
-        open={openSource}
-        onClose={() => setOpenSource(false)}
-        onOpen={() => setOpenSource(true)}
-        value={source}
-        onChange={e => setSource(e.target.value)}
-      >
-        <MenuItem value={"Pixabay"}>Pixabay</MenuItem>
-        <MenuItem value={"Unsplash"}>Unsplash</MenuItem>
-        <MenuItem value={"Pexels"}>Pexels</MenuItem>
-        <MenuItem value={"Giphy"}>Giphy</MenuItem>
-      </Select>
+      </Select> */}
     </React.Fragment>
   );
 }

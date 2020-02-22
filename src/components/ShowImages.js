@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "./css/ShowImages.css";
 import Dialog from "@material-ui/core/Dialog";
-import { DialogContent } from "@material-ui/core";
+import { DialogContent, DialogActions, IconButton } from "@material-ui/core";
 import OneImage from "./OneImage";
+import CloseIcon from "@material-ui/icons/Close";
 
 export default function ShowImages({ auth, setAuth, images, toggle }) {
   const [focus, setFocus] = useState("");
@@ -67,7 +68,7 @@ export default function ShowImages({ auth, setAuth, images, toggle }) {
       </div>
 
       <Dialog
-        style={{ marginTop: 0 }}
+        style={{ margin: 0, padding: 0 }}
         open={open}
         onClose={handleClose}
         scroll="body"
@@ -75,6 +76,11 @@ export default function ShowImages({ auth, setAuth, images, toggle }) {
         aria-describedby="scroll-dialog-description"
         maxWidth="sm"
       >
+        <DialogActions>
+          <IconButton onClick={handleClose} style={{ margin: 0, padding: 0 }}>
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
         <DialogContent dividers style={{ padding: 0 }}>
           <img
             style={{ maxWidth: "100%", maxHeight: "100%", margin: "auto" }}

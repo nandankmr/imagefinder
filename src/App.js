@@ -45,19 +45,16 @@ function App() {
     clearTimeout(time);
 
     setTime(
-      setTimeout(
-        () => {
-          Axios.get(
-            `${ENDPOINT}${source.toLowerCase()}/?q=${q}&hits=${hits}&page=${page}`
-          )
-            .then(res => {
-              setImages(res.data);
-              // console.log(res.data);
-            })
-            .catch(err => console.log(err));
-        },
-        source === "Unsplash" ? 1000 : 0
-      )
+      setTimeout(() => {
+        Axios.get(
+          `${ENDPOINT}${source.toLowerCase()}/?q=${q}&hits=${hits}&page=${page}`
+        )
+          .then(res => {
+            setImages(res.data);
+            // console.log(res.data);
+          })
+          .catch(err => console.log(err));
+      }, 0)
     );
   };
 

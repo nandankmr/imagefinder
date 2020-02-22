@@ -4,3 +4,9 @@
   margin: auto;
   padding-top: 0.5rem;
 }
+
+@media (max-width: 500px) {
+  .card {
+    flex-direction: column;
+  }
+}
