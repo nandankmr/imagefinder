@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { IconButton } from "@material-ui/core";
@@ -12,7 +12,7 @@ const AddFavorite = ({ favorite, auth, setAuth, toggle, image }) => {
   } = auth;
 
   const addfavorite = () => {
-    Axios.put("http://localhost:5000/user/addfavorite", image, {
+    Axios.put("https://imageseeker.herokuapp.com/user/addfavorite", image, {
       headers: { "x-auth-token": auth.token }
     })
       .then(res => {
@@ -30,7 +30,7 @@ const AddFavorite = ({ favorite, auth, setAuth, toggle, image }) => {
   };
 
   const removefavorite = () => {
-    Axios.put("http://localhost:5000/user/removefavorite", image, {
+    Axios.put("https://imageseeker.herokuapp.com/user/removefavorite", image, {
       headers: { "x-auth-token": auth.token }
     }).then(res => {
       setAuth({

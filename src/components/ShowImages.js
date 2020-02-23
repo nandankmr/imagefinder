@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "./css/ShowImages.css";
 import Dialog from "@material-ui/core/Dialog";
-import { DialogContent, DialogActions, IconButton } from "@material-ui/core";
+import {
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Typography
+} from "@material-ui/core";
 import OneImage from "./OneImage";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -48,24 +53,45 @@ export default function ShowImages({ auth, setAuth, images, toggle }) {
 
   return (
     <div className={classes.root}>
-      <div className="container">
-        {images.map(image => (
-          <OneImage
-            toggle={toggle}
-            favorite={
-              auth.isAuth &&
-              auth.user.favorites.find(value => value === image.id)
-                ? true
-                : false
-            }
-            setAuth={setAuth}
-            auth={auth}
-            key={image.id}
-            image={image}
-            handleClickOpen={handleClickOpen}
+      {images.length ? (
+        <div className="container">
+          {images.map(image => (
+            <OneImage
+              toggle={toggle}
+              favorite={
+                auth.isAuth &&
+                auth.user.favorites.find(value => value === image.id)
+                  ? true
+                  : false
+              }
+              setAuth={setAuth}
+              auth={auth}
+              key={image.id}
+              image={image}
+              handleClickOpen={handleClickOpen}
+            />
+          ))}
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column"
+          }}
+        >
+          <Typography
+            style={{ color: "#444", marginTop: "2rem", textAlign: "center" }}
+          >
+            Opps... No images found. Here is a random image for you
+          </Typography>
+          <img
+            alt=""
+            style={{ maxHeight: "70vh", maxWidth: "100vw" }}
+            src="https://source.unsplash.com/random"
           />
-        ))}
-      </div>
+        </div>
+      )}
 
       <Dialog
         style={{ margin: 0, padding: 0 }}
@@ -74,36 +100,21 @@ export default function ShowImages({ auth, setAuth, images, toggle }) {
         scroll="body"
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
-        maxWidth="sm"
+        maxWidth="lg"
       >
         <DialogActions>
           <IconButton onClick={handleClose} style={{ margin: 0, padding: 0 }}>
             <CloseIcon />
           </IconButton>
         </DialogActions>
-        <DialogContent dividers style={{ padding: 0 }}>
+        <DialogContent style={{ padding: 0 }}>
           <img
-            style={{ maxWidth: "100%", maxHeight: "100%", margin: "auto" }}
+            style={{ maxWidth: "100%", maxHeight: "89vh", margin: "auto" }}
             src={focus}
             alt=""
           />
         </DialogContent>
       </Dialog>
-
-      <footer
-        style={{
-          height: "2rem",
-          marginTop: "1rem",
-          background: "#333",
-          bottom: "0px",
-          width: "100%",
-          color: "#eee",
-          textAlign: "center",
-          paddingTop: "1rem"
-        }}
-      >
-        Nandan Kumar, &copy; 2020
-      </footer>
     </div>
   );
 }

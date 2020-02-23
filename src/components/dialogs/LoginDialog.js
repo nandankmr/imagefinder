@@ -8,6 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Axios from "axios";
+import { LinearProgress } from "@material-ui/core";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -19,6 +20,7 @@ export default function LoginDialog({ setAuth, setInfo, variant, onClick }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [progress, setProgress] = useState(false);
 
   const toggle = () => {
     setOpen(!open);
@@ -30,7 +32,8 @@ export default function LoginDialog({ setAuth, setInfo, variant, onClick }) {
     if (!email.trim() || !password.trim()) {
       setMessage("Enter all fields");
     } else {
-      Axios.post("http://localhost:5000/user/login", {
+      setProgress(true);
+      Axios.post("https://imageseeker.herokuapp.com/user/login", {
         email,
         password
       })
@@ -45,7 +48,8 @@ export default function LoginDialog({ setAuth, setInfo, variant, onClick }) {
           toggle();
           if (onClick) onClick();
         })
-        .catch(err => setMessage(err.response.data.msg));
+        .catch(err => setMessage(err.response.data.msg))
+        .finally(() => setProgress(false));
     }
   };
 
@@ -71,6 +75,7 @@ export default function LoginDialog({ setAuth, setInfo, variant, onClick }) {
 
       <Dialog open={open} onClose={toggle} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
+        {progress ? <LinearProgress /> : null}
         <DialogContent dividers>
           <TextField
             autoFocus

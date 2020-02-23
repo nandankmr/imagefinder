@@ -4,7 +4,6 @@ import {
   TextField,
   InputLabel,
   MenuItem,
-  Paper,
   Card,
   Button,
   Typography,
@@ -13,17 +12,23 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import "./css/Search.css";
 
-export default function Search({ getServerImages }) {
+export default function Search({ getServerImages, page, setPage }) {
   const [q, setQ] = useState("");
-  const [hits, setHits] = useState(10);
-  const [open, setOpen] = useState(false);
+  const [hits] = useState(15);
+  const [] = useState(false);
   const [openSource, setOpenSource] = useState(false);
   const [source, setSource] = useState("Pixabay");
 
   useEffect(() => {
     // console.log(images);
-    getServerImages(source, q, hits);
-  }, [hits, source]);
+
+    getServerImages(source, q, hits, page);
+  }, [hits, page]);
+
+  useEffect(() => {
+    if (page !== 1) setPage(1);
+    else getServerImages(source, q, hits, page);
+  }, [source]);
 
   return (
     <React.Fragment>
@@ -35,9 +40,6 @@ export default function Search({ getServerImages }) {
           defaultValue={q}
           fullWidth={true}
           onChange={e => setQ(e.target.value)}
-          onKeyPress={e =>
-            e.key == "Enter" ? () => getServerImages(source, q, hits) : null
-          }
         />
         <FormControl style={{ minWidth: "7rem", margin: " 0 0.5rem" }}>
           {" "}
@@ -48,6 +50,7 @@ export default function Search({ getServerImages }) {
             onOpen={() => setOpenSource(true)}
             value={source}
             onChange={e => setSource(e.target.value)}
+            variant="filled"
           >
             <MenuItem value={"Pixabay"}>Pixabay</MenuItem>
             <MenuItem value={"Unsplash"}>Unsplash</MenuItem>
@@ -61,7 +64,9 @@ export default function Search({ getServerImages }) {
           color="secondary"
           className="btn"
           startIcon={<SearchIcon />}
-          onClick={() => getServerImages(source, q, hits)}
+          onClick={() =>
+            page === 1 ? getServerImages(source, q, hits) : setPage(1)
+          }
         >
           <Typography>Search</Typography>
         </Button>

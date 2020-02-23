@@ -4,12 +4,13 @@ import Axios from "axios";
 import ShowImages from "./ShowImages";
 import "./css/Profile.css";
 import { Redirect } from "react-router-dom";
+import RemoveAccountDialog from "./dialogs/RemoveAccountDialog";
 
-const Profile = ({ auth, setAuth, toggle }) => {
+const Profile = ({ auth, setAuth, setInfo }) => {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:5000/user/getfavorites", {
+    Axios.get("https://imageseeker.herokuapp.com/user/getfavorites", {
       headers: { "x-auth-token": auth.token }
     }).then(res => {
       console.log(res.data);
@@ -21,7 +22,7 @@ const Profile = ({ auth, setAuth, toggle }) => {
       <Card className="profile-card">
         <CardHeader
           style={{
-            height: "25vh",
+            height: "20vh",
             margin: "auto"
           }}
           avatar={
@@ -33,6 +34,15 @@ const Profile = ({ auth, setAuth, toggle }) => {
           subheader={"Email: " + auth.user.email}
           titleTypographyProps={{ variant: "h5" }}
         />
+
+        <div className="removebtn">
+          <RemoveAccountDialog
+            setAuth={setAuth}
+            setInfo={setInfo}
+            auth={auth}
+          />
+        </div>
+
         <Typography
           variant="h5"
           style={{
@@ -44,6 +54,7 @@ const Profile = ({ auth, setAuth, toggle }) => {
         >
           Favorites
         </Typography>
+
         <ShowImages images={favorites} auth={auth} setAuth={setAuth} />
       </Card>
     </Fragment>

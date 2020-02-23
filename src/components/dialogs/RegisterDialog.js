@@ -8,6 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Axios from "axios";
+import { LinearProgress } from "@material-ui/core";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -20,6 +21,7 @@ export default function RegisterDialog({ setAuth, setInfo, variant, onClick }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [progress, setProgress] = useState(false);
 
   const toggle = () => {
     setOpen(!open);
@@ -27,12 +29,16 @@ export default function RegisterDialog({ setAuth, setInfo, variant, onClick }) {
     setPassword("");
     setEmail("");
   };
+  const regex = new RegExp(
+    "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+  );
 
   const handleRegister = () => {
     if (!name.trim() || !email.trim() || !password.trim()) {
       setMessage("Enter all fields");
-    } else {
-      Axios.post("http://localhost:5000/user/register", {
+    } else if (regex.test(email.trim())) {
+      setProgress(true);
+      Axios.post("https://imageseeker.herokuapp.com/user/register", {
         name,
         email,
         password
@@ -48,8 +54,9 @@ export default function RegisterDialog({ setAuth, setInfo, variant, onClick }) {
           toggle();
           if (onClick) onClick();
         })
-        .catch(err => setMessage(err.response.data.msg));
-    }
+        .catch(err => setMessage(err.response.data.msg))
+        .finally(() => setProgress(false));
+    } else setMessage("Enter a valid email id");
   };
 
   const handleCloseMessage = (event, reason) => {
@@ -74,6 +81,7 @@ export default function RegisterDialog({ setAuth, setInfo, variant, onClick }) {
 
       <Dialog open={open} onClose={toggle} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Register</DialogTitle>
+        {progress ? <LinearProgress /> : null}
         <DialogContent dividers>
           <TextField
             autoFocus
