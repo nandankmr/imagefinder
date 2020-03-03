@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import "./css/Search.css";
+import Inputbar from "./Inputbar";
 
 export default function Search({ getServerImages, page, setPage }) {
   const [q, setQ] = useState("");
@@ -35,12 +36,28 @@ export default function Search({ getServerImages, page, setPage }) {
       <Card raised className="card">
         <TextField
           className="input"
+          name="search"
           label="Search Images"
           variant="outlined"
           defaultValue={q}
           fullWidth={true}
           onChange={e => setQ(e.target.value)}
+          onKeyPress={e => {
+            if (e.key === "Enter") {
+              page === 1 ? getServerImages(source, q, hits) : setPage(1);
+            }
+          }}
         />
+
+        {/* <Inputbar
+          q={q}
+          setQ={setQ}
+          page={page}
+          getServerImages={getServerImages}
+          hits={hits}
+          source={source}
+          setPage={setPage}
+        /> */}
         <FormControl style={{ minWidth: "7rem", margin: " 0 0.5rem" }}>
           {" "}
           <InputLabel>Source</InputLabel>

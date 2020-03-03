@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import Profile from "./components/Profile";
 import { Fab, Typography } from "@material-ui/core";
+import { LinearProgress } from "@material-ui/core";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -21,9 +22,7 @@ function Alert(props) {
 
 function App() {
   const [open, setOpen] = useState(false);
-  const toggle = () => {
-    setOpen(!open);
-  };
+  const [progress, setProgress] = useState(false);
 
   const [openInfo, setOpenInfo] = useState(false);
   const [queryData, setQueryData] = useState({ q: "", source: "", hits: 10 });
@@ -34,6 +33,10 @@ function App() {
   const [page, setPage] = useState(1);
   const [ENDPOINT] = useState("https://imageseeker.herokuapp.com/");
   const [auth, setAuth] = useState({ isAuth: false, token: "", user: {} });
+
+  const toggle = () => {
+    setOpen(!open);
+  };
 
   const handleCloseMessage = (event, reason) => {
     if (reason === "clickaway") {
@@ -51,6 +54,7 @@ function App() {
 
   const getServerImages = (source, q, hits, page) => {
     setQueryData({ q, source, hits });
+    setProgress(true);
     Axios.get(
       `${ENDPOINT}api/${source.toLowerCase()}?q=${q}&hits=${hits}&page=${page}`
     )
@@ -58,7 +62,8 @@ function App() {
         setImages(res.data);
         console.log(res.data);
       })
-      .catch(console.log);
+      .catch(console.log)
+      .finally(() => setProgress(false));
   };
 
   return (
@@ -78,6 +83,7 @@ function App() {
               page={page}
               setPage={setPage}
             />
+
             {images ? (
               <Fragment>
                 {images.length === queryData.hits ? (
@@ -95,7 +101,7 @@ function App() {
                     <Typography>Next</Typography>
                   </Fab>
                 ) : null}
-
+                {progress ? <LinearProgress /> : null}
                 {page > 1 ? (
                   <Fab
                     onClick={() => setPage(page - 1)}

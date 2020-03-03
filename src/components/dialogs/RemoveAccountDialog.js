@@ -23,7 +23,7 @@ export default function RemoveAccountDialog({ setAuth, setInfo, auth }) {
     });
     toggle();
   };
-
+  //
   return (
     <div>
       <Button

@@ -28,7 +28,7 @@ const OneImage = ({
         image={image.webformatURL}
         className="image"
         onClick={() => {
-          handleClickOpen(image.largeImageURL);
+          handleClickOpen(image.largeImageURL, image.download);
         }}
       />
 

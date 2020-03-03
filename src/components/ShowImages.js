@@ -10,9 +10,10 @@ import {
 } from "@material-ui/core";
 import OneImage from "./OneImage";
 import CloseIcon from "@material-ui/icons/Close";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 export default function ShowImages({ auth, setAuth, images, toggle }) {
-  const [focus, setFocus] = useState("");
+  const [focus, setFocus] = useState({});
   const [open, setOpen] = React.useState(false);
   const useStyles = makeStyles(theme => ({
     appBar: {
@@ -43,8 +44,8 @@ export default function ShowImages({ auth, setAuth, images, toggle }) {
 
   const classes = useStyles();
 
-  const handleClickOpen = img => {
-    setFocus(img);
+  const handleClickOpen = (img, download) => {
+    setFocus({ img, download });
     setOpen(true);
   };
   const handleClose = () => {
@@ -102,7 +103,26 @@ export default function ShowImages({ auth, setAuth, images, toggle }) {
         aria-describedby="scroll-dialog-description"
         maxWidth="lg"
       >
-        <DialogActions>
+        <DialogActions
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          {/* <a
+            href={focus.download || focus.img}
+            style={{
+              color: "#555",
+              marginBottom: "5px",
+              padding: 0,
+              height: "0.5rem"
+            }}
+            target="_blank"
+          >
+            <GetAppIcon />
+          </a> */}
+          <a href={focus.download || focus.img} target="_blank">
+            <IconButton style={{ margin: 0, padding: 0 }}>
+              <GetAppIcon />
+            </IconButton>
+          </a>
           <IconButton onClick={handleClose} style={{ margin: 0, padding: 0 }}>
             <CloseIcon />
           </IconButton>
@@ -110,7 +130,7 @@ export default function ShowImages({ auth, setAuth, images, toggle }) {
         <DialogContent style={{ padding: 0 }}>
           <img
             style={{ maxWidth: "100%", maxHeight: "89vh", margin: "auto" }}
-            src={focus}
+            src={focus.img}
             alt=""
           />
         </DialogContent>

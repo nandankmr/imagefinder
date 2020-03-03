@@ -3,9 +3,16 @@
   justify-content: space-between;
 }
 
-.tool div {
+.title,
+.navmenu {
   display: flex;
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
+}
+
+@media (max-width: 500px) {
+  .navmenu {
+    display: none;
+  }
 }

@@ -9,13 +9,15 @@ import "./css/Navbar.css";
 import LogoutDialog from "./dialogs/LogoutDialog";
 import { Link } from "react-router-dom";
 import { Divider } from "@material-ui/core";
+import Sidebar from "./Sidebar";
 
 const Navbar = ({ setAuth, auth, setInfo }) => {
   return (
     <div className="root">
       <AppBar position="static">
         <Toolbar className="tool">
-          <div>
+          <div className="title">
+            <Sidebar setAuth={setAuth} auth={auth} setInfo={setInfo} />
             <Typography variant="h6" className="title">
               <Link style={{ color: "white", textDecoration: "None" }} to="/">
                 {" "}
@@ -23,7 +25,7 @@ const Navbar = ({ setAuth, auth, setInfo }) => {
               </Link>
             </Typography>
           </div>
-          <div>
+          <div className="navmenu">
             {!auth.isAuth ? (
               <Fragment>
                 <RegisterDialog setAuth={setAuth} setInfo={setInfo} />

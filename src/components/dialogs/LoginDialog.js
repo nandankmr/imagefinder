@@ -9,12 +9,21 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Axios from "axios";
 import { LinearProgress } from "@material-ui/core";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function LoginDialog({ setAuth, setInfo, variant, onClick }) {
+export default function LoginDialog({
+  setAuth,
+  setInfo,
+  variant,
+  onClick,
+  isList
+}) {
   const [open, setOpen] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
   const [email, setEmail] = useState("");
@@ -48,7 +57,11 @@ export default function LoginDialog({ setAuth, setInfo, variant, onClick }) {
           toggle();
           if (onClick) onClick();
         })
-        .catch(err => setMessage(err.response.data.msg))
+        .catch(err =>
+          err.response
+            ? setMessage(err.response.data.msg)
+            : setMessage("Please check your network")
+        )
         .finally(() => setProgress(false));
     }
   };
@@ -69,9 +82,15 @@ export default function LoginDialog({ setAuth, setInfo, variant, onClick }) {
 
   return (
     <div>
-      <Button color="inherit" variant={variant} onClick={toggle}>
-        Login
-      </Button>
+      {isList ? (
+        <ListItem button onClick={toggle}>
+          <ListItemText primary="Login" />
+        </ListItem>
+      ) : (
+        <Button color="inherit" variant={variant} onClick={toggle}>
+          Login
+        </Button>
+      )}
 
       <Dialog open={open} onClose={toggle} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
