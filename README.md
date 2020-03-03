@@ -13,3 +13,7 @@ Go to http://nandankmr.github.io/imagefinder to access the website.
 3. If you like an image, you can add it to your favorites. Favorite images can be accessed later anywhere after login.
 
 4. User can also delete their account.
+
+## Technical description
+
+Made using MERN stack.
